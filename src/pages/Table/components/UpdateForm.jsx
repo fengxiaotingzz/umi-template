@@ -9,22 +9,7 @@ import {
 import { Modal } from 'antd';
 import React from 'react';
 
-export interface FormValueType extends Partial<API.UserInfo> {
-  target?: string;
-  template?: string;
-  type?: string;
-  time?: string;
-  frequency?: string;
-}
-
-export interface UpdateFormProps {
-  onCancel: (flag?: boolean, formVals?: FormValueType) => void;
-  onSubmit: (values: FormValueType) => Promise<void>;
-  updateModalVisible: boolean;
-  values: Partial<API.UserInfo>;
-}
-
-const UpdateForm: React.FC<UpdateFormProps> = (props) => (
+const UpdateForm = (props) => (
   <StepsForm
     stepsProps={{
       size: 'small',
