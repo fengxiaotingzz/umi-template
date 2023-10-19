@@ -1,4 +1,6 @@
 import { defineConfig } from '@umijs/max';
+import proxy from './config/proxy'
+import routes from './config/router'
 
 export default defineConfig({
   antd: {},
@@ -12,35 +14,9 @@ export default defineConfig({
   dva: {
     hmr: true
   },
-  routes: [
-    {
-      path: '/',
-      redirect: '/home',
-    },
-    {
-      name: '首页',
-      path: '/home',
-      component: './Home',
-    },
-    {
-      name: '权限演示',
-      path: '/access',
-      component: './Access',
-    },
-    {
-      name: ' CRUD 示例',
-      path: '/table',
-      component: './Table',
-    },
-  ],
+  routes,
   npmClient: 'yarn',
-  proxy: { 
-    '/api': {
-      target: 'https://www.cn',
-      changeOrigin: true,
-      secure: false,
-    },
-  },
+  proxy,
   mock: false
 });
 
