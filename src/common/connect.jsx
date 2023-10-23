@@ -2,7 +2,6 @@ import { connect } from 'dva';
 import { cloneDeep, isEmpty } from 'lodash';
 import { request } from './ajax';
 import {withErrorBoundary} from '@/common/error'
-import { compose } from 'lodash/fp';
 
 const getStateObj = (stateArr, stateValue) => {
   return (state) => {

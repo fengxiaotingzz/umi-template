@@ -1,4 +1,5 @@
 import { defineConfig } from '@umijs/max';
+import webpackConfig from './webpack.config';
 
 export default defineConfig({
   antd: {},
@@ -41,6 +42,7 @@ export default defineConfig({
       secure: false,
     },
   },
-  mock: false
+  mock: false,
+  chainWebpack: webpackConfig,
 });
 

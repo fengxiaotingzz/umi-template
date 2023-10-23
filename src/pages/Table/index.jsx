@@ -19,7 +19,7 @@ const { addUser, queryUserList, deleteUser, modifyUser } =
  * 添加节点
  * @param fields
  */
-const handleAdd = async (fields: API.UserInfo) => {
+const handleAdd = async (fields) => {
   const hide = message.loading('正在添加');
   try {
     await addUser({ ...fields });
@@ -37,7 +37,7 @@ const handleAdd = async (fields: API.UserInfo) => {
  * 更新节点
  * @param fields
  */
-const handleUpdate = async (fields: FormValueType) => {
+const handleUpdate = async (fields) => {
   const hide = message.loading('正在配置');
   try {
     await modifyUser(
@@ -65,7 +65,7 @@ const handleUpdate = async (fields: FormValueType) => {
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: API.UserInfo[]) => {
+const handleRemove = async (selectedRows) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
@@ -82,15 +82,15 @@ const handleRemove = async (selectedRows: API.UserInfo[]) => {
   }
 };
 
-const TableList: React.FC<unknown> = () => {
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+const TableList = () => {
+  const [createModalVisible, handleModalVisible] = useState(false);
   const [updateModalVisible, handleUpdateModalVisible] =
-    useState<boolean>(false);
+    useState(false);
   const [stepFormValues, setStepFormValues] = useState({});
-  const actionRef = useRef<ActionType>();
-  const [row, setRow] = useState<API.UserInfo>();
-  const [selectedRowsState, setSelectedRows] = useState<API.UserInfo[]>([]);
-  const columns: ProDescriptionsItemProps<API.UserInfo>[] = [
+  const actionRef = useRef();
+  const [row, setRow] = useState();
+  const [selectedRowsState, setSelectedRows] = useState([]);
+  const columns = [
     {
       title: '名称',
       dataIndex: 'name',
@@ -145,7 +145,7 @@ const TableList: React.FC<unknown> = () => {
         title: 'CRUD 示例',
       }}
     >
-      <ProTable<API.UserInfo>
+      <ProTable
         headerTitle="查询表格"
         actionRef={actionRef}
         rowKey="id"
@@ -205,7 +205,7 @@ const TableList: React.FC<unknown> = () => {
         onCancel={() => handleModalVisible(false)}
         modalVisible={createModalVisible}
       >
-        <ProTable<API.UserInfo, API.UserInfo>
+        <ProTable
           onSubmit={async (value) => {
             const success = await handleAdd(value);
             if (success) {
@@ -250,7 +250,7 @@ const TableList: React.FC<unknown> = () => {
         closable={false}
       >
         {row?.name && (
-          <ProDescriptions<API.UserInfo>
+          <ProDescriptions
             column={2}
             title={row?.name}
             request={async () => ({

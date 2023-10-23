@@ -16,7 +16,8 @@
     "@umijs/max": "^4.0.65",
     "@umijs/plugin-layout": "^0.18.4",
     "antd": "^5.4.0",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "open-browser-webpack-plugin": "0.0.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",

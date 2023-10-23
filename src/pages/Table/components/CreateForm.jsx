@@ -1,12 +1,7 @@
 import { Modal } from 'antd';
 import React, { PropsWithChildren } from 'react';
 
-interface CreateFormProps {
-  modalVisible: boolean;
-  onCancel: () => void;
-}
-
-const CreateForm: React.FC<PropsWithChildren<CreateFormProps>> = (props) => {
+const CreateForm = (props) => {
   const { modalVisible, onCancel } = props;
 
   return (
