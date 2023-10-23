@@ -9,7 +9,6 @@ export default defineConfig({
   layout: {
     title: '@umijs/max',
   },
-  ssr: {},
   dva: {
     hmr: true
   },
