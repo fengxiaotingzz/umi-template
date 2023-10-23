@@ -1,5 +1,12 @@
 import { defineConfig } from '@umijs/max';
-import webpackConfig from './webpack.config';
+import genericNames from 'generic-names';
+import proxy from './config/proxy';
+import routes from './config/router';
+
+const localIdentName = '[name]__[local]-[hash:base64:5]';
+const generateScope = genericNames(localIdentName, {
+  context: process.cwd(),
+});
 
 export default defineConfig({
   antd: {},
@@ -11,38 +18,38 @@ export default defineConfig({
     title: '@umijs/max',
   },
   dva: {
-    hmr: true
+    hmr: true,
   },
-  routes: [
-    {
-      path: '/',
-      redirect: '/home',
-    },
-    {
-      name: '首页',
-      path: '/home',
-      component: './Home',
-    },
-    {
-      name: '权限演示',
-      path: '/access',
-      component: './Access',
-    },
-    {
-      name: ' CRUD 示例',
-      path: '/table',
-      component: './Table',
-    },
-  ],
+  routes,
   npmClient: 'yarn',
-  proxy: { 
-    '/api': {
-      target: 'https://www.cn',
-      changeOrigin: true,
-      secure: false,
-    },
-  },
+  proxy,
   mock: false,
-  chainWebpack: webpackConfig,
-});
 
+  // 配置下面代码是为了实现import './index.module.less'引入cssModule
+  extraBabelPlugins: [
+    [
+      'react-css-modules',
+      {
+        exclude: 'node_modules',
+        generateScopedName: genericNames(localIdentName),
+        filetypes: {
+          '.less': {
+            syntax: 'postcss-less',
+          },
+        },
+      },
+    ],
+  ],
+  // 这里配置getLocalIdent是因为在新版本的css-loader和babel-plugin-react-css-modules生成的hash算法不一样，导致js和css的hash不一样，样式取不上的问题
+  cssLoader: {
+      modules: {
+        getLocalIdent: (
+          { resourcePath },
+          localIdentName,
+          localName,
+        ) => {
+          return generateScope(localName, resourcePath);
+        },
+      },
+  },
+});

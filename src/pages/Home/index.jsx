@@ -4,6 +4,8 @@ import { dispatchFilter } from './dispatch';
 import {useOutletContext} from 'umi'
 import Test from './Test'
 
+import './index.module.less'
+
 const HomePage = ({ dispatch, filterData, a, ...other }) => {
   const { value } = filterData;
   useEffect(() => {
@@ -11,7 +13,7 @@ const HomePage = ({ dispatch, filterData, a, ...other }) => {
   }, []);
 
   console.log(useOutletContext())
-  return <div className='test'>222<Test/></div>;
+  return <div styleName='test'>222<Test/></div>;
 };
 
 export default connect(['filterData', 'a'], 'home')(HomePage);
