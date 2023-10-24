@@ -1,19 +1,37 @@
 import connect from '@/common/connect';
 import { useEffect } from 'react';
+import { FormattedMessage, useIntl, SelectLang,setLocale } from 'umi';
+import Test from './Test';
 import { dispatchFilter } from './dispatch';
-import {useOutletContext} from 'umi'
-import Test from './Test'
 
-import './index.module.less'
+import './index.module.less';
 
 const HomePage = ({ dispatch, filterData, ...other }) => {
+  const intl = useIntl();
+
   const { value } = filterData;
   useEffect(() => {
     dispatchFilter()(dispatch);
   }, []);
 
-  console.log(useOutletContext(), filterData)
-  return <div styleName='test'>222<Test/></div>;
+  const msg = intl.formatMessage({
+    id: 'name',
+  });
+
+  // console.log(useOutletContext(), filterData)
+
+  return (
+    <div styleName="test">
+      <SelectLang/>
+      <div onClick={() => {
+        setLocale('en-US', false)
+      }}>切换语言</div>
+      222
+      <Test />
+      {/* <FormattedMessage id='name'/> */}
+      {msg}
+    </div>
+  );
 };
 
 export default connect(['filterData', 'a'], 'home')(HomePage);

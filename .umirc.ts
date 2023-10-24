@@ -23,7 +23,10 @@ export default defineConfig({
   routes,
   npmClient: 'yarn',
   proxy,
-  // mock: true,
+  locale: {
+    default: 'zh-CN',
+    baseSeparator: '-',
+  },
   // 配置下面代码是为了实现import './index.module.less'引入cssModule
   extraBabelPlugins: [
     [
