@@ -107,81 +107,6 @@ export default connect([], '${name}')(${resultName});
   });
 };
 
-// 创建containers
-const createContainer = (resultName) => {
-  const containerUrl = `./src/containers/${resultName}.js`;
-  const containerContent = `import React, { PureComponent } from 'react';
-import Comp from '@components/${resultName}';
-
-export default class ${resultName} extends PureComponent {
-  render() {
-    return <Comp />;
-  }
-}
-  `;
-
-  fs.appendFile(`${containerUrl}`, containerContent, (err) => {
-    if (err) throw err;
-    console.log(chalk.green(`${containerUrl}文件创建成功！`));
-  });
-};
-
-// 创建actions
-const createAction = (name, resultName, extraName) => {
-  const dirUrl = `./src/actions/${resultName}`;
-  fs.mkdirSync(dirUrl);
-
-  const actionJsContent = `export const onChangeCondition =
-  (condition) =>
-  (dispatch, getState) => {
-    dispatch('/${name}/condition/changeCondition', condition);
-  };
-export const onClearCondition = () => (dispatch, getState) => {
-  dispatch('/${name}/condition/clear');
-};`;
-
-  fs.appendFile(`${dirUrl}/index.js`, actionJsContent, (err) => {
-    if (err) throw err;
-    console.log(chalk.green(`${dirUrl}/index.js文件创建成功！`));
-  });
-};
-
-// 创建reducers
-const creatReducer = (name, resultName) => {
-  const dirUrl = `./src/reducers/${resultName}`;
-  fs.mkdirSync(dirUrl);
-
-  const reducerContent = `import { combinceReducer } from '@common/easy';
-
-const initCondition = {};
-  
-const condition = {
-  state: initCondition,
-  reducers: {
-    changeCondition(state, condition) {
-      return {
-        ...state,
-        ...condition
-      };
-    },
-    clear(state) {
-      return initCondition;
-    }
-  }
-};
-
-export default combinceReducer(
-  { condition },
-  '/${name}'
-);
-  `;
-
-  fs.appendFile(`${dirUrl}/index.js`, reducerContent, (err) => {
-    if (err) throw err;
-    console.log(chalk.green(`${dirUrl}/index.js文件创建成功！`));
-  });
-};
-
 // router中添加路由
 const wirteAddRouter = (name, cName) => {
   const resultName = getName(name);
@@ -195,9 +120,6 @@ const wirteAddRouter = (name, cName) => {
     fs.writeFileSync(filePath, content);
 
     createPage(name, resultName);
-    // createContainer(resultName);
-    // createAction(name, resultName, extraName);
-    // creatReducer(name, resultName);
 
     readlineObj.close();
   });
