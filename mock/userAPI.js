@@ -12,10 +12,11 @@ export default {
       response_code: 0,
     });
   },
-  'PUT /api/v1/user/': (req, res) => {
+  'POST /api/v1/user/list': (req, res) => {
     res.json({
       success: true,
       response_code: 0,
+      data: { list: users },
     });
   },
 };

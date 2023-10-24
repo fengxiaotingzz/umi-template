@@ -1,6 +1,6 @@
 import connect from '@/common/connect';
 import { useEffect } from 'react';
-import { FormattedMessage, useIntl, SelectLang,setLocale } from 'umi';
+import { useOutletContext, FormattedMessage, useIntl, SelectLang,setLocale, getLocale } from 'umi';
 import Test from './Test';
 import { dispatchFilter } from './dispatch';
 
@@ -18,7 +18,9 @@ const HomePage = ({ dispatch, filterData, ...other }) => {
     id: 'name',
   });
 
-  // console.log(useOutletContext(), filterData)
+  console.log(useOutletContext(), filterData)
+
+  // console.log(getLocale())
 
   return (
     <div styleName="test">
