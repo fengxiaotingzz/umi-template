@@ -56,7 +56,7 @@ const dispatchFunc = (dispatch, stateValue) => {
       request({ url, ...other }).then((res) => {
         current.loading = false;
         if (res) {
-          current.data = res || {};
+          current.data = res?.data;
         }
 
         dispatch({
