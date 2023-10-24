@@ -1,6 +1,6 @@
 export default {
     '/api': {
-        target: 'https://www.cn',
+        target: 'http://localhost:8000',
         changeOrigin: true,
         secure: false,
       },

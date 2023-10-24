@@ -1,12 +1,5 @@
-import { lazy } from 'react';
-
-const lazyComp = (name) => lazy(`/${name}`);
-
 export default [
-  {
-    path: '/',
-    redirect: lazyComp('home'),
-  }
-  ,{ name: '测试', path: '/testTest',component: lazyComp('TestTest')}
-  ];
-     
+  { path: '/', redirect: 'home' },
+  {name: '首页',path: '/home',component: './Home',},
+  { name: '测试', path: '/testTest', component: 'TestTest' },
+];

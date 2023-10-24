@@ -8,11 +8,11 @@ export const getData = ({ url }) => {
   return fetch(url)
     .then((res) => res.json())
     .then((res) => {
-      if (res?.status === 0) {
+      if (res?.response_code === 0) {
         return res;
       }
 
-      handleResult(res)
+      return handleResult(res)
     });
 };
 

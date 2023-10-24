@@ -6,13 +6,13 @@ import Test from './Test'
 
 import './index.module.less'
 
-const HomePage = ({ dispatch, filterData, a, ...other }) => {
+const HomePage = ({ dispatch, filterData, ...other }) => {
   const { value } = filterData;
   useEffect(() => {
     dispatchFilter()(dispatch);
   }, []);
 
-  console.log(useOutletContext())
+  console.log(useOutletContext(), filterData)
   return <div styleName='test'>222<Test/></div>;
 };
 

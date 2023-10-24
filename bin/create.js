@@ -92,7 +92,7 @@ import { dispatchFilter } from './dispatch';
 
 import './index.module.less';
 
-function ${resultName}() {
+function ${resultName}({ dispatch }) {
   return (
     <div styleName='${styleName}-page'></div>
   );
