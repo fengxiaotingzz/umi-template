@@ -114,7 +114,7 @@ const wirteAddRouter = (name, cName) => {
 
   fs.readFile(filePath, 'utf-8', (err, data) => {
     const dataArr = data.split('];');
-    const content = `${dataArr[0]},{ name: '${cName}', path: '/${name}',component: lazyComp('${resultName}')}
+    const content = `${dataArr[0]},{ name: '${cName}', path: '/${name}',component: '${resultName}'}
   ];
      `;
     fs.writeFileSync(filePath, content);
