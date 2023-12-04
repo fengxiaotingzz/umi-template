@@ -2,6 +2,7 @@ import { defineConfig } from '@umijs/max';
 import genericNames from 'generic-names';
 import proxy from './config/proxy';
 import routes from './config/router';
+import { WebpackOpenBrowser} from 'webpack-open-browser'
 
 const localIdentName = '[name]__[local]-[hash:base64:5]';
 const generateScope = genericNames(localIdentName, {
@@ -54,4 +55,12 @@ export default defineConfig({
         },
       },
   },
+  chainWebpack(memo){
+    memo.plugin('webpack-open-browser').use(WebpackOpenBrowser, [
+      {
+        url: 'http://localhost:8080',
+        ignoreErrors: false,
+      },
+    ]);
+  }
 });
