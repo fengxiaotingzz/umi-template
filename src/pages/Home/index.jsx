@@ -2,6 +2,7 @@ import connect from '@/common/connect';
 import { useEffect } from 'react';
 import { useOutletContext, FormattedMessage, useIntl, SelectLang,setLocale, getLocale } from 'umi';
 import Test from './Test';
+import {Button} from 'antd'
 import { dispatchFilter } from './dispatch';
 
 import './index.module.less';
@@ -32,6 +33,7 @@ const HomePage = ({ dispatch, filterData, ...other }) => {
       <Test />
       {/* <FormattedMessage id='name'/> */}
       {msg}
+      <Button type='primary'>点击</Button>
     </div>
   );
 };
