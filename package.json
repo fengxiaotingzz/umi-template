@@ -10,7 +10,7 @@
     "setup": "max setup",
     "start": "npm run dev",
     "create": "node ./bin/create.js",
-    "commit": "cz"
+    "push": "git add ./ && npx cz && git push"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
