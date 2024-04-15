@@ -5,7 +5,7 @@ export default {
         filterData: {}
     },
     reducers: {
-        changeFilterData(state, action){
+        changeFilterData(state, action) {
             return {
                 ...state, ...action.payload
             }

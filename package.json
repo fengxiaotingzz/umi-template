@@ -9,7 +9,8 @@
     "postinstall": "max setup",
     "setup": "max setup",
     "start": "npm run dev",
-    "create": "node ./bin/create.js"
+    "create": "node ./bin/create.js",
+    "commit": "cz"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
