@@ -16,7 +16,7 @@ export default defineConfig({
   initialState: {},
   request: {},
   layout: {
-    title: '@umijs/max',
+    title: '我是一个新的项目啊',
   },
   dva: {
     hmr: true,
@@ -58,7 +58,7 @@ export default defineConfig({
   chainWebpack(memo){
     memo.plugin('webpack-open-browser').use(WebpackOpenBrowser, [
       {
-        url: 'http://localhost:8080',
+        url: 'http://localhost:8000',
         ignoreErrors: false,
       },
     ]);

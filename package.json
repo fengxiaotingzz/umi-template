@@ -30,6 +30,7 @@
   "devDependencies": {
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
+    "cz-conventional-changelog": "^3.3.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.0",
     "prettier": "^2.8.7",
@@ -41,6 +42,11 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "husky": {
     "hooks": {
