@@ -1,41 +1,34 @@
 import connect from '@/common/connect';
-import { useEffect } from 'react';
-import { useOutletContext, FormattedMessage, useIntl, SelectLang,setLocale, getLocale } from 'umi';
-import Test from './Test';
-import {Button} from 'antd'
-import { dispatchFilter } from './dispatch';
+import { Button } from 'antd';
+import { SelectLang, setLocale, useOutletContext } from 'umi';
+import * as actions from './dispatch';
 
 import './index.module.less';
 
-const HomePage = ({ dispatch, filterData, ...other }) => {
-  const intl = useIntl();
-
-  const { value } = filterData;
-  useEffect(() => {
-    dispatchFilter()(dispatch);
-  }, []);
-
+function Home({ home, changeCondition, clearCondition, getData }) {
+  const { data = {}, condition = {} } = home;
   const msg = intl.formatMessage({
     id: 'name',
   });
 
-  console.log(useOutletContext(), filterData)
-
-  // console.log(getLocale())
-
+  console.log(useOutletContext(), filterData);
   return (
-    <div styleName="test">
-      <SelectLang/>
-      <div onClick={() => {
-        setLocale('en-US', false)
-      }}>切换语言</div>
+    <div styleName="home-page">
+      <SelectLang />
+      <div
+        onClick={() => {
+          setLocale('en-US', false);
+        }}
+      >
+        切换语言
+      </div>
       222
       <Test />
       {/* <FormattedMessage id='name'/> */}
       {msg}
-      <Button type='primary'>点击</Button>
+      <Button type="primary">点击</Button>
     </div>
   );
-};
+}
 
-export default connect(['filterData', 'a'], 'home')(HomePage);
+export default connect(actions)(Home);

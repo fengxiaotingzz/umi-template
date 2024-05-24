@@ -25,45 +25,72 @@ const createPage = (name, resultName) => {
 
   createIndexJsx(name, styleName, resultName, dirUrl);
   createStyleFile(styleName, dirUrl);
-  createDispatch(dirUrl);
-  createModalFile(name, dirUrl);
+  createDispatch(name, dirUrl);
+  createModelFile(name, dirUrl);
 };
 
-const createModalFile = (name) => {
+const createModelFile = (name, dir) => {
   const content = `
+import { handlePayload, handleClearCondition} from '@/utils/util';
+
+const defaultCondition = {};
+
 export default {
   namespace: '${name}',
   state: {
-      a: '1',
-      filterData: {}
+    condition: defaultCondition,
+    data: {}
   },
   reducers: {
-      changeFilterData(state, action){
-          return {
-              ...state, ...action.payload
-          }
-      }
+    getData(state, action) {
+      return handlePayload({ state, action, key: 'data' });
+    },
+    changeCondition(state, action) {
+      return handlePayload({ state, action, key: 'condition' })
+    },
+    clearCondition(state) {
+      return handleClearCondition({ state, defaultCondition });
+    }
   }
 }
   `
-  const url = `./src/models/${name}.js`
-  const dirName = path.resolve(url);
-  fs.appendFile(dirName, content, (err) => {
+  const modelsUrl = `${dir}/models`;
+  const modelsDir = path.resolve(modelsUrl);
+  fs.mkdir(modelsDir, err => {
     if (err) throw err;
-    console.log(chalk.green(`${url}文件创建成功！`));
-  });
+
+    const dispatchUrl = `${modelsUrl}/index.js`;
+    fs.appendFile(dispatchUrl, content, e=> {
+      if (e) throw e;
+
+      console.log(chalk.green(`${dispatchUrl}创建成果！`));
+      readlineObj.close();
+    })
+  })
 }
 
-const createDispatch = (dirUrl) => {
+const createDispatch = (name, dirUrl) => {
   const content = `
-export const dispatchFilter = () => (dispatch) => {
+export const getData = dispatch => params => {
   dispatch({
-    type: 'changeFilterData/filterData',
-    payload: {
-      value: '333',
-    },
+    url: '',
+    method: 'get',
+    type: '${name}/getData',
+    body: params
+  })
+}
+export const changeCondition = (dispatch) => (condition) => {
+  dispatch({
+    type: '${name}/changeCondition',
+    payload: condition,
   });
 };
+
+export const clearCondition = dispatch => () => {
+  dispatch({
+    type: '${name}/clearCondition'
+  })
+}
   `
 
   fs.appendFile(`${dirUrl}/dispatch.js`, content, (err) => {
@@ -88,17 +115,18 @@ const createStyleFile = (name, dirUrl) => {
 const createIndexJsx = (name, styleName, resultName, dirUrl) => {
   const jsContent = `import connect from '@/common/connect';
 import { useEffect } from 'react';
-import { dispatchFilter } from './dispatch';
+import * as actions from './dispatch';
 
 import './index.module.less';
 
-function ${resultName}({ dispatch }) {
+function ${resultName}({ ${name}, changeCondition, clearCondition, getData }) {
+  const { data = {}, condition = {} } = ${name};
   return (
     <div styleName='${styleName}-page'></div>
   );
 }
 
-export default connect([], '${name}')(${resultName});
+export default connect(actions)(${resultName});
 `;
 
   fs.appendFile(`${dirUrl}/index.jsx`, jsContent, (err) => {

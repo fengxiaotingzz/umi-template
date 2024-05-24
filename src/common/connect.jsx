@@ -1,87 +1,60 @@
-import { connect } from 'dva';
-import { cloneDeep, isEmpty } from 'lodash';
+import { connect } from 'dva'
+import { memo } from 'react';
+import { compose } from 'lodash/fp';
 import { request } from './ajax';
 import {withErrorBoundary} from '@/common/error'
 
-const getStateObj = (stateArr, stateValue) => {
-  return (state) => {
-    const currentObj = state?.[stateValue];
-    if (!isEmpty(currentObj)) {
-      const obj = {};
-      stateArr?.forEach((val) => {
-        if (currentObj?.[val]) {
-          obj[val] = currentObj?.[val];
-        }
-      });
-      return obj;
-    } else {
-      throw Error('not found this action name');
-    }
-  };
-};
-
-const handlePayload = (payload = {}, typeList = []) => {
-  let current = undefined;
-  const result = typeList?.reduce((total, cur, i) => {
-    total[cur] = undefined;
-    if (i === typeList?.length - 1) {
-      total[cur] = payload;
-      current = total[cur];
-    }
-    return total;
-  }, {});
-
-  return { payload: result, current };
-};
-
-const dispatchFunc = (dispatch, stateValue) => {
-  return (obj) => {
-    const { type, payload = {}, url, ...other } = obj;
-    const typeList = type?.split('/');
-    const resultPayload = handlePayload(
-      payload,
-      typeList?.slice(1, typeList?.length),
-    );
-    const payloadObj = new Object(resultPayload?.payload);
-    const current = resultPayload?.current;
-    const curType = `${stateValue}/${typeList?.[0]}`;
+const dispatchFunc = dispatch => {
+  return obj => {
+    const { type, payload = {}, url, handleRequest = res => res, ...other } = obj;
 
     if (url) {
-      current.loading = true;
+      payload.loading = true;
       dispatch({
-        type: curType,
-        payload: cloneDeep(payloadObj),
-      });
+        type,
+        payload
+      })
 
-      request({ url, ...other }).then((res) => {
-        current.loading = false;
+      request({ url, ...other }).then(res => {
+        payload.loading = false;
         if (res) {
-          current.data = res?.data;
+          payload.data = res?.data
         }
 
         dispatch({
-          type: curType,
-          payload: cloneDeep(payloadObj),
-        });
-      });
+          type,
+          payload: handleRequest(payload)
+        })
+      }).catch(() => {
+        payload.loading = false;
+        dispatch({
+          type,
+          payload
+        })
+      })
     } else {
       dispatch({
-        type: curType,
-        payload: cloneDeep(payloadObj),
-      });
+        type,
+        payload
+      })
     }
-  };
-};
+  }
+}
 
-const connectBox = (stateArr, stateValue) => (WrapComponent) => {
-  return withErrorBoundary(connect(getStateObj(stateArr, stateValue))(function (props) {
-    const { dispatch, componentStack, ...others } = props;
-    return (
-      <WrapComponent
-        {...{ ...others, dispatch: dispatchFunc(dispatch, stateValue) }}
-      />
-    );
-  }))
-};
+const mapStateFunc = () => state => state;
+
+const mapActions = actions => dispatch => {
+  const keys = Object.keys(actions);
+  const result = {};
+  keys.forEach(key => {
+    result[key] = actions[key](dispatchFunc(dispatch))
+  })
+
+  return result;
+}
+
+const connectBox = actions => WrapComponent => {
+  return compose(memo, withErrorBoundary, connect(mapStateFunc(), mapActions(actions)))(WrapComponent)
+}
 
 export default connectBox;
