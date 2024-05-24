@@ -1,13 +1,21 @@
-export const dispatchFilter = () => (dispatch) => {
+export const getData = dispatch => params => {
   dispatch({
-    // get
-    // url: '/api/v1/queryUserList',
-    // post
-    url: '/api/v1/user/list',
-    method: 'post',
-    type: 'changeFilterData/filterData',
-    payload: {
-      value: '333',
-    },
+    url: '',
+    method: 'get',
+    type: 'home/getData',
+    body: params
+  })
+}
+export const changeCondition = (dispatch) => (condition) => {
+  dispatch({
+    type: 'home/changeCondition',
+    payload: condition,
   });
 };
+
+export const clearCondition = dispatch => () => {
+  dispatch({
+    type: 'home/clearCondition'
+  })
+}
+  
