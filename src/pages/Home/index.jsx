@@ -6,8 +6,9 @@ import * as actions from './dispatch';
 
 import './index.module.less';
 
-function Home({ home, changeCondition, clearCondition, getData }) {
+function Home({ home, changeCondition, clearCondition, getData, ...other }) {
   const { data = {}, condition = {} } = home;
+  console.log(other);
   const intl = useIntl();
   const msg = intl.formatMessage({
     id: 'name',

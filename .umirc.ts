@@ -1,8 +1,8 @@
 import { defineConfig } from '@umijs/max';
 import genericNames from 'generic-names';
+import { WebpackOpenBrowser } from 'webpack-open-browser';
 import proxy from './config/proxy';
 import routes from './config/router';
-import { WebpackOpenBrowser} from 'webpack-open-browser'
 
 const localIdentName = '[name]__[local]-[hash:base64:5]';
 const generateScope = genericNames(localIdentName, {
@@ -43,24 +43,19 @@ export default defineConfig({
       },
     ],
   ],
-  // 这里配置getLocalIdent是因为在新版本的css-loader和babel-plugin-react-css-modules生成的hash算法不一样，导致js和css的hash不一样，样式取不上的问题
   cssLoader: {
-      modules: {
-        getLocalIdent: (
-          { resourcePath },
-          localIdentName,
-          localName,
-        ) => {
-          return generateScope(localName, resourcePath);
-        },
+    modules: {
+      getLocalIdent: ({ resourcePath }, localIdentName, localName) => {
+        return generateScope(localName, resourcePath);
       },
+    },
   },
-  chainWebpack(memo){
+  chainWebpack(memo) {
     memo.plugin('webpack-open-browser').use(WebpackOpenBrowser, [
       {
         url: 'http://localhost:8000',
         ignoreErrors: false,
       },
     ]);
-  }
+  },
 });

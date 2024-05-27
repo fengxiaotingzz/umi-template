@@ -17,11 +17,11 @@ const createPage = (name, resultName) => {
   fs.mkdirSync(dirName);
 
   // 将name根绝大写字母分割
-  const nameArr = name.split(/(?=[A-Z])/)
-  nameArr.forEach((item,index) => {
-    nameArr[index] = item.toLowerCase()
-  })
- const styleName = nameArr.join('-')
+  const nameArr = name.split(/(?=[A-Z])/);
+  nameArr.forEach((item, index) => {
+    nameArr[index] = item.toLowerCase();
+  });
+  const styleName = nameArr.join('-');
 
   createIndexJsx(name, styleName, resultName, dirUrl);
   createStyleFile(styleName, dirUrl);
@@ -53,21 +53,21 @@ export default {
     }
   }
 }
-  `
+  `;
   const modelsUrl = `${dir}/models`;
   const modelsDir = path.resolve(modelsUrl);
-  fs.mkdir(modelsDir, err => {
+  fs.mkdir(modelsDir, (err) => {
     if (err) throw err;
 
     const dispatchUrl = `${modelsUrl}/index.js`;
-    fs.appendFile(dispatchUrl, content, e=> {
+    fs.appendFile(dispatchUrl, content, (e) => {
       if (e) throw e;
 
       console.log(chalk.green(`${dispatchUrl}创建成果！`));
       readlineObj.close();
-    })
-  })
-}
+    });
+  });
+};
 
 const createDispatch = (name, dirUrl) => {
   const content = `
@@ -91,13 +91,13 @@ export const clearCondition = dispatch => () => {
     type: '${name}/clearCondition'
   })
 }
-  `
+  `;
 
   fs.appendFile(`${dirUrl}/dispatch.js`, content, (err) => {
     if (err) throw err;
     console.log(chalk.green(`${dirUrl}/dispatch.js文件创建成功！`));
   });
-}
+};
 
 // 创建style文件
 const createStyleFile = (name, dirUrl) => {
@@ -141,11 +141,16 @@ const wirteAddRouter = (name, cName) => {
   const filePath = path.resolve('./config/router.js');
 
   fs.readFile(filePath, 'utf-8', (err, data) => {
-    const dataArr = data.split('];');
-    const content = `${dataArr[0]},{ name: '${cName}', path: '/${name}',component: '${resultName}'}
-  ];
-     `;
-    fs.writeFileSync(filePath, content);
+    const routerList = data.split('export default ');
+    const router = routerList[1];
+    const dataArr = router.split('];');
+    const text = `{ name: '${cName}', path: '/${name}',component: './${resultName}'},`;
+    dataArr.push(text);
+    dataArr.push('];');
+    const dataStr = dataArr.join('');
+    routerList[1] = dataStr;
+
+    fs.writeFileSync(filePath, routerList.join('export default '));
 
     createPage(name, resultName);
 
