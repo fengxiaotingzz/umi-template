@@ -1,17 +1,18 @@
 import connect from '@/common/connect';
 import { Button } from 'antd';
-import { SelectLang, setLocale, useOutletContext } from 'umi';
+import { SelectLang, setLocale, useIntl } from 'umi';
+import Text from './components/Text';
 import * as actions from './dispatch';
 
 import './index.module.less';
 
 function Home({ home, changeCondition, clearCondition, getData }) {
   const { data = {}, condition = {} } = home;
+  const intl = useIntl();
   const msg = intl.formatMessage({
     id: 'name',
   });
 
-  console.log(useOutletContext(), filterData);
   return (
     <div styleName="home-page">
       <SelectLang />
@@ -23,7 +24,7 @@ function Home({ home, changeCondition, clearCondition, getData }) {
         切换语言
       </div>
       222
-      <Test />
+      <Text />
       {/* <FormattedMessage id='name'/> */}
       {msg}
       <Button type="primary">点击</Button>
