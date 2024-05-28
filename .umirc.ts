@@ -24,6 +24,7 @@ export default defineConfig({
   routes,
   npmClient: 'yarn',
   proxy,
+  hash: true,
   locale: {
     default: 'zh-CN',
     baseSeparator: '-',
